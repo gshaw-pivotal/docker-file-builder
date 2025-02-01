@@ -13,13 +13,53 @@ class DockerfileBuilder
             case "node":
             case "nodejs":
             case "node.js":
-                int version = GetNodeVersion();
-                GenerateNodeDockerfile(version);
+                int nodeVersion = GetNodeVersion();
+                GenerateNodeDockerfile(nodeVersion);
+                break;
+            case "java":
+                int javaVersion = GetJavaVersion();
+                string javaAppName = GetJavaAppName();
+                GenerateJavaDockerfile(javaVersion, javaAppName);
                 break;
             default:
                 Console.WriteLine("Please enter a valid Application Language.");
                 break;
         }
+    }
+
+    private static int GetJavaVersion()
+    {
+        int version = 0;
+        bool valid_version_input = false;
+        while (!valid_version_input)
+        {
+            Console.WriteLine("Enter Java Version (8 / 11 / 17 / 21 / 23):");
+            version = int.Parse(Console.ReadLine());
+
+            if (version is 8 or 11 or 17 or 21 or 23)
+            {
+                valid_version_input = true;
+            }
+        }
+
+        return version;
+    }
+
+    private static string GetJavaAppName()
+    {
+        string appName = "";
+        while (appName.Length < 1)
+        {
+            Console.WriteLine("Enter Application Jar File Name:");
+            appName = Console.ReadLine();
+
+            if (appName.EndsWith(".jar"))
+            {
+                appName = appName.Substring(0, appName.Length - 4);
+            }
+        }
+
+        return appName;
     }
 
     private static int GetNodeVersion()
@@ -53,6 +93,20 @@ class DockerfileBuilder
         Console.WriteLine("COPY src/ .");
         Console.WriteLine("EXPOSE 3000");
         Console.WriteLine("CMD [ \"npm\", \"start\"]");
+
+        Console.WriteLine("======================");
+        Console.WriteLine("Finished creating Dockerfile.");
+    }
+
+    private static void GenerateJavaDockerfile(int version, string app_name)
+    {
+        Console.WriteLine("Creating Dockerfile...");
+        Console.WriteLine("======================");
+
+        Console.WriteLine($"FROM amazoncorretto:{version}");
+        Console.WriteLine($"COPY target/{app_name}.jar app.jar");
+        Console.WriteLine("EXPOSE 8080");
+        Console.WriteLine("ENTRYPOINT [\"java\",\"-jar\",\"/app.jar\"]");
 
         Console.WriteLine("======================");
         Console.WriteLine("Finished creating Dockerfile.");
