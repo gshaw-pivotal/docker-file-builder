@@ -53,7 +53,7 @@ class DockerfileBuilder
             Console.WriteLine($"Enter Java Version ({GenerateVersionsString(JavaVersions)}):");
             version = int.Parse(Console.ReadLine());
 
-            if (version is 8 or 11 or 17 or 21 or 23)
+            if (JavaVersions.Contains(version))
             {
                 validVersionInput = true;
             }
@@ -88,7 +88,7 @@ class DockerfileBuilder
             Console.WriteLine($"Enter Node Version ({GenerateVersionsString(NodeVersions)}):");
             version = int.Parse(Console.ReadLine());
 
-            if (version is 18 or 20 or 22 or 23)
+            if (NodeVersions.Contains(version))
             {
                 validVersionInput = true;
             }
