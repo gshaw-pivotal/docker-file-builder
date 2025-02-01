@@ -1,6 +1,10 @@
 ﻿// See https://aka.ms/new-console-template for more information
 class DockerfileBuilder
 {
+    private static readonly int[] JavaVersions = [8, 11, 17, 21, 23];
+
+    private static readonly int[] NodeVersions = [18, 20, 22, 23];
+
     static void Main()
     {
         string lang;
@@ -27,13 +31,26 @@ class DockerfileBuilder
         }
     }
 
+    private static string GenerateVersionsString(int[] versions)
+    {
+        string versionsString = "";
+
+        for (int i = 0; i < versions.Length - 1; i++)
+        {
+            versionsString  = versionsString + versions[i] + " / ";
+        }
+        versionsString += versions[^1];
+        
+        return versionsString;
+    }
+
     private static int GetJavaVersion()
     {
         int version = 0;
         bool validVersionInput = false;
         while (!validVersionInput)
         {
-            Console.WriteLine("Enter Java Version (8 / 11 / 17 / 21 / 23):");
+            Console.WriteLine($"Enter Java Version ({GenerateVersionsString(JavaVersions)}):");
             version = int.Parse(Console.ReadLine());
 
             if (version is 8 or 11 or 17 or 21 or 23)
@@ -68,7 +85,7 @@ class DockerfileBuilder
         bool validVersionInput = false;
         while (!validVersionInput)
         {
-            Console.WriteLine("Enter Node Version (18 / 20 / 22 / 23):");
+            Console.WriteLine($"Enter Node Version ({GenerateVersionsString(NodeVersions)}):");
             version = int.Parse(Console.ReadLine());
 
             if (version is 18 or 20 or 22 or 23)
