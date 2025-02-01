@@ -30,15 +30,15 @@ class DockerfileBuilder
     private static int GetJavaVersion()
     {
         int version = 0;
-        bool valid_version_input = false;
-        while (!valid_version_input)
+        bool validVersionInput = false;
+        while (!validVersionInput)
         {
             Console.WriteLine("Enter Java Version (8 / 11 / 17 / 21 / 23):");
             version = int.Parse(Console.ReadLine());
 
             if (version is 8 or 11 or 17 or 21 or 23)
             {
-                valid_version_input = true;
+                validVersionInput = true;
             }
         }
 
@@ -65,15 +65,15 @@ class DockerfileBuilder
     private static int GetNodeVersion()
     {
         int version = 0;
-        bool valid_version_input = false;
-        while (!valid_version_input)
+        bool validVersionInput = false;
+        while (!validVersionInput)
         {
             Console.WriteLine("Enter Node Version (18 / 20 / 22 / 23):");
             version = int.Parse(Console.ReadLine());
 
             if (version is 18 or 20 or 22 or 23)
             {
-                valid_version_input = true;
+                validVersionInput = true;
             }
         }
 
