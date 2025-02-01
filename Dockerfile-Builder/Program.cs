@@ -24,9 +24,20 @@ class DockerfileBuilder
 
     private static int GetNodeVersion()
     {
-        Console.WriteLine("Enter Node Version (18 / 20 / 22 / 23):");
-        string version = Console.ReadLine();
-        return int.Parse(version);
+        int version = 0;
+        bool valid_version_input = false;
+        while (!valid_version_input)
+        {
+            Console.WriteLine("Enter Node Version (18 / 20 / 22 / 23):");
+            version = int.Parse(Console.ReadLine());
+
+            if (version is 18 or 20 or 22 or 23)
+            {
+                valid_version_input = true;
+            }
+        }
+
+        return version;
     }
 
     private static void GenerateNodeDockerfile(int version)
