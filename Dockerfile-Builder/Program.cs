@@ -5,6 +5,8 @@ class DockerfileBuilder
 
     private static readonly int[] NodeVersions = [18, 20, 22, 23];
 
+    private static readonly string[] PythonVersions = ["2", "3", "3.9", "3.10", "3.11", "3.12", "3.13"];
+
     static void Main()
     {
         string lang;
@@ -25,6 +27,11 @@ class DockerfileBuilder
                 string javaAppName = GetJavaAppName();
                 GenerateJavaDockerfile(javaVersion, javaAppName);
                 break;
+            case "python":
+                string pythonVersion = GetPythonVersion();
+                string pythonAppName = GetPythonAppName();
+                GeneratePythonDockerfile(pythonVersion, pythonAppName);
+                break;
             default:
                 Console.WriteLine("Please enter a valid Application Language.");
                 break;
@@ -42,6 +49,54 @@ class DockerfileBuilder
         versionsString += versions[^1];
         
         return versionsString;
+    }
+
+    private static string GenerateVersionsString(string[] versions)
+    {
+        string versionsString = "";
+
+        for (int i = 0; i < versions.Length - 1; i++)
+        {
+            versionsString  = versionsString + versions[i] + " / ";
+        }
+        versionsString += versions[^1];
+
+        return versionsString;
+    }
+
+    private static string GetPythonVersion()
+    {
+        string version = "";
+        bool validVersionInput = false;
+        while (!validVersionInput)
+        {
+            Console.WriteLine($"Enter Java Version ({GenerateVersionsString(PythonVersions)}):");
+            version = Console.ReadLine();
+
+            if (PythonVersions.Contains(version))
+            {
+                validVersionInput = true;
+            }
+        }
+
+        return version;
+    }
+
+    private static string GetPythonAppName()
+    {
+        string appName = "";
+        while (appName.Length < 1)
+        {
+            Console.WriteLine("Enter Python Daemon or Script File Name:");
+            appName = Console.ReadLine();
+
+            if (appName.EndsWith(".py"))
+            {
+                appName = appName.Substring(0, appName.Length - 3);
+            }
+        }
+
+        return appName;
     }
 
     private static int GetJavaVersion()
@@ -124,6 +179,22 @@ class DockerfileBuilder
         Console.WriteLine($"COPY target/{app_name}.jar app.jar");
         Console.WriteLine("EXPOSE 8080");
         Console.WriteLine("ENTRYPOINT [\"java\",\"-jar\",\"/app.jar\"]");
+
+        Console.WriteLine("======================");
+        Console.WriteLine("Finished creating Dockerfile.");
+    }
+
+    private static void GeneratePythonDockerfile(string version, string app_name)
+    {
+        Console.WriteLine("Creating Dockerfile...");
+        Console.WriteLine("======================");
+
+        Console.WriteLine($"FROM python:{version}");
+        Console.WriteLine($"WORKDIR /usr/src/app");
+        Console.WriteLine("COPY requirements.txt ./");
+        Console.WriteLine("RUN pip install --no-cache-dir -r requirements.txt");
+        Console.WriteLine("COPY . .");
+        Console.WriteLine($"ENTRYPOINT [\"python\",\"./{app_name}.py\"]");
 
         Console.WriteLine("======================");
         Console.WriteLine("Finished creating Dockerfile.");
