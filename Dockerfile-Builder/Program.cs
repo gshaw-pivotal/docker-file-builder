@@ -192,13 +192,13 @@ class DockerfileBuilder
         Console.WriteLine("Finished creating Dockerfile.");
     }
 
-    private static void GenerateJavaDockerfile(int version, string app_name)
+    private static void GenerateJavaDockerfile(int version, string appName)
     {
         Console.WriteLine("Creating Dockerfile...");
         Console.WriteLine("======================");
 
         Console.WriteLine($"FROM amazoncorretto:{version}");
-        Console.WriteLine($"COPY target/{app_name}.jar app.jar");
+        Console.WriteLine($"COPY target/{appName}.jar app.jar");
         Console.WriteLine("EXPOSE 8080");
         Console.WriteLine("ENTRYPOINT [\"java\",\"-jar\",\"/app.jar\"]");
 
@@ -206,7 +206,7 @@ class DockerfileBuilder
         Console.WriteLine("Finished creating Dockerfile.");
     }
 
-    private static void GeneratePythonDockerfile(string version, string app_name)
+    private static void GeneratePythonDockerfile(string version, string appName)
     {
         Console.WriteLine("Creating Dockerfile...");
         Console.WriteLine("======================");
@@ -216,13 +216,13 @@ class DockerfileBuilder
         Console.WriteLine("COPY requirements.txt ./");
         Console.WriteLine("RUN pip install --no-cache-dir -r requirements.txt");
         Console.WriteLine("COPY . .");
-        Console.WriteLine($"ENTRYPOINT [\"python\",\"./{app_name}.py\"]");
+        Console.WriteLine($"ENTRYPOINT [\"python\",\"./{appName}.py\"]");
 
         Console.WriteLine("======================");
         Console.WriteLine("Finished creating Dockerfile.");
     }
 
-    private static void GenerateCSharpDockerfile(string app_name)
+    private static void GenerateCSharpDockerfile(string appName)
     {
         Console.WriteLine("Creating Dockerfile...");
         Console.WriteLine("======================");
@@ -233,7 +233,7 @@ class DockerfileBuilder
         Console.WriteLine("RUN dotnet restore");
         Console.WriteLine("RUN dotnet publish -c Release -o release");
         Console.WriteLine("WORKDIR /app/release");
-        Console.WriteLine($"ENTRYPOINT [\"dotnet\",\"{app_name}.dll\"]");
+        Console.WriteLine($"ENTRYPOINT [\"dotnet\",\"{appName}.dll\"]");
 
         Console.WriteLine("======================");
         Console.WriteLine("Finished creating Dockerfile.");
